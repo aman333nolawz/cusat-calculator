@@ -71,7 +71,7 @@ async function main() {
     const register_no = document.getElementById("register_no").value.trim();
     const loginResponse = await login(register_no);
     const auth_token = loginResponse["access_token"];
-    const exam_id = loginResponse["candidates"]["intExamID"];
+    const exam_id = loginResponse["exams"][0]["intExamID"];
 
     const questionlist = await get_questionlist(auth_token, exam_id);
 
@@ -84,7 +84,10 @@ async function main() {
     for (const question of questionlist["questions"]) {
       const correct_answer = question["correctAnswer"];
       const selected_answer = question["selectedAnswer"];
-      if (typeof correct_answer !== "string" || !/^\d+$/.test(correct_answer)) {
+      if (
+        typeof correct_answer !== "string" ||
+        !/^\d+$/.test(correct_answer.trim())
+      ) {
         continue;
       }
       if (selected_answer === null) {
