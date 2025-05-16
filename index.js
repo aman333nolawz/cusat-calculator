@@ -68,7 +68,7 @@ async function main() {
   resultDiv.innerHTML = "";
   resultDiv.className = "";
   try {
-    const register_no = document.getElementById("register_no").value;
+    const register_no = document.getElementById("register_no").value.trim();
     const loginResponse = await login(register_no);
     const auth_token = loginResponse["access_token"];
     const exam_id = loginResponse["candidates"]["intExamID"];
