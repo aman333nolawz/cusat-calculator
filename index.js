@@ -80,6 +80,7 @@ async function main() {
     let attempted_qs = 0;
     let correct_qs = 0;
     let incorrect_qs = 0;
+    let cancelled_qs = 0;
 
     for (const question of questionlist["questions"]) {
       const correct_answer = question["correctAnswer"];
@@ -88,6 +89,7 @@ async function main() {
         typeof correct_answer !== "string" ||
         !/^\d+$/.test(correct_answer.trim())
       ) {
+        cancelled_qs += 1;
         continue;
       }
       if (selected_answer === null) {
@@ -109,7 +111,7 @@ async function main() {
     result += `<strong>Attempted questions</strong>: ${attempted_qs}<br />`;
     result += `<strong>Correct questions</strong>: ${correct_qs}<br />`;
     result += `<strong>Incorrect questions</strong>: ${incorrect_qs}<br />`;
-    result += `<strong>Cancelled questions</strong>: ${225 - total_qs}<br />`;
+    result += `<strong>Cancelled questions</strong>: ${cancelled_qs}<br />`;
     result += `<strong>Total Questions</strong>: ${total_qs}<br />`;
     resultDiv.innerHTML = result;
   } catch (error) {
