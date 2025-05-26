@@ -85,7 +85,9 @@ async function main() {
     for (const question of questionlist["questions"]) {
       const correct_answer = question["correctAnswer"];
       const selected_answer = question["selectedAnswer"];
+      const cancellaion_status = question["intCancellationStatus"];
       if (
+        cancellaion_status === 1 ||
         typeof correct_answer !== "string" ||
         !/^\d+$/.test(correct_answer.trim())
       ) {
