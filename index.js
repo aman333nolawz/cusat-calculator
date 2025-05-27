@@ -1,3 +1,8 @@
+
+// enpoins: 
+//      https://cusatapiobj.kerala.gov.in/api/login, 
+//      https://cusatapiobj.kerala.gov.in/api/questionslist
+
 const base_url = "https://cusatapiobj.kerala.gov.in/api";
 const loaderContainer = document.querySelector(".loaderContainer");
 const loaderText = document.getElementById("loaderText");
@@ -28,7 +33,7 @@ async function login(register_no) {
     resultDiv.innerHTML =
       "Login failed. Please try again after checking register number.";
     resultDiv.classList.add("error");
-    throw error; // Re-throw the error to be handled by the caller
+    throw error; // rethrow
   }
 }
 
@@ -60,7 +65,7 @@ async function get_questionlist(auth_token, exam_id) {
     loaderText.textContent = "";
     resultDiv.innerHTML = "Failed to get questions. Please try again.";
     resultDiv.classList.add("error");
-    throw error; // Re-throw the error
+    throw error; // rethrows
   }
 }
 
@@ -72,6 +77,7 @@ async function main() {
     const loginResponse = await login(register_no);
     const auth_token = loginResponse["access_token"];
     const exam_id = loginResponse["exams"][0]["intExamID"];
+    const candidate_name = loginResponse["candidates"]["vchrCandidateName"] || "N/A";
 
     const questionlist = await get_questionlist(auth_token, exam_id);
 
@@ -85,9 +91,9 @@ async function main() {
     for (const question of questionlist["questions"]) {
       const correct_answer = question["correctAnswer"];
       const selected_answer = question["selectedAnswer"];
-      const cancellaion_status = question["intCancellationStatus"];
+      const cancellation_status = question["intCancellationStatus"];
       if (
-        cancellaion_status === 1 ||
+        cancellation_status === 1 ||
         typeof correct_answer !== "string" ||
         !/^\d+$/.test(correct_answer.trim())
       ) {
@@ -109,18 +115,19 @@ async function main() {
       total_qs += 1;
     }
 
-    let result = `<strong>Score</strong>: ${score}<br />`;
-    result += `<strong>Attempted questions</strong>: ${attempted_qs}<br />`;
-    result += `<strong>Correct questions</strong>: ${correct_qs}<br />`;
-    result += `<strong>Incorrect questions</strong>: ${incorrect_qs}<br />`;
-    result += `<strong>Cancelled questions</strong>: ${cancelled_qs}<br />`;
-    result += `<strong>Total Questions</strong>: ${total_qs}<br />`;
+    let result = `<strong>Name</strong>: ${candidate_name}<br />`;
+    result += `<strong>Final Score </strong>: ${score}<br />`;
+    result += `<strong>Attempted </strong>: ${attempted_qs}<br />`;
+    result += `<strong>Correct </strong>: ${correct_qs}<br />`;
+    result += `<strong>Incorrect </strong>: ${incorrect_qs}<br />`;
+    result += `<strong>Cancelled </strong>: ${cancelled_qs}<br />`;
     resultDiv.innerHTML = result;
   } catch (error) {
-    console.error("An error occurred:", error);
+    console.error("Errrror occurred:", error);
     resultDiv.innerHTML =
-      "An error occurred. Please try again after checking your register number.";
+      "naahh .. incorrect Register number !, dont confuse with Roll Number .";
   }
 }
 
 document.getElementById("calculate").addEventListener("click", main);
+
