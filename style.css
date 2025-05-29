@@ -39,7 +39,9 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .container {
@@ -119,6 +121,7 @@ button:hover {
   width: 40px;
   height: 40px;
   animation: spin 1s linear infinite;
+  margin: auto;
   margin-bottom: 10px;
 }
 
