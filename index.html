@@ -1,27 +1,40 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cusat CAT B.Tech Score Calculator</title>
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>CUSAT CAT 2025 Score Calculator</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Cusat CAT Score Calculator</h1>
-    <label for="register_no">Register No:</label>
-    <input
-      type="text"
-      name="register_no"
-      id="register_no"
-      placeholder="Enter your Register Number"
-    />
-    <button id="calculate">Calculate</button>
-    <div class="loaderContainer" style="display: none">
-      <div class="loader"></div>
-      <p id="loaderText"></p>
+    <div class="container">
+      <button id="themeToggle" title="Toggle theme">🌓</button>
+      <h1>CUSAT CAT 2025 Score Calculator</h1>
+      <label for="register_no">Register Number</label>
+      <input
+        type="text"
+        name="register_no"
+        id="register_no"
+        placeholder="Eg: 25101001"
+      />
+      <button id="calculate">Calculate Score</button>
+
+      <div class="loaderContainer">
+        <div class="loader"></div>
+        <p id="loaderText"></p>
+      </div>
+
+      <div id="result"></div>
     </div>
-    <div id="result"></div>
 
     <script src="index.js"></script>
+    <script>
+      const toggle = document.getElementById("themeToggle");
+      toggle.addEventListener("click", () => {
+        const html = document.documentElement;
+        const current = html.getAttribute("data-theme");
+        html.setAttribute("data-theme", current === "light" ? "dark" : "light");
+      });
+    </script>
   </body>
 </html>
