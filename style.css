@@ -135,7 +135,7 @@ button:hover {
   font-size: 0.9em;
 }
 
-#result {
+#results {
   margin-top: 30px;
   padding: 20px;
   background-color: var(--result-bg);
@@ -146,7 +146,21 @@ button:hover {
   transition: all 0.3s ease;
 }
 
-#result.error {
+#results.error {
+  background-color: var(--error-bg);
+  border-color: var(--error-border);
+  color: var(--error-text);
+}
+
+.result {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid var(--result-border);
+  border-radius: 5px;
+}
+
+.result.error {
+  /* border: 1px solid #ff6b6b; padding: 10px; margin: 10px 0; border-radius: 5px; background-color: #ffe0e0; */
   background-color: var(--error-bg);
   border-color: var(--error-border);
   color: var(--error-text);
