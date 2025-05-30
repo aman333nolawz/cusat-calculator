@@ -22,17 +22,18 @@ async function login(register_no) {
       },
       body: JSON.stringify(data),
     });
+    if (!response.ok) throw Error("404 returned");
     const jsonResponse = await response.json();
     console.log("Logged in!");
     return jsonResponse;
   } catch (error) {
     console.error("Login failed:", error);
-    loaderContainer.style.display = "none";
-    loaderText.textContent = "";
-
     resultsDiv.innerHTML =
       "naahh.. incorrect Register number! dont confuse with Roll Number .";
     resultsDiv.classList.add("error");
+    loaderContainer.style.display = "none";
+    loaderText.textContent = "";
+
     throw error; // rethrow
   }
 }
@@ -54,6 +55,7 @@ async function get_questionlist(auth_token, exam_id) {
       headers: headers,
       body: JSON.stringify(data),
     });
+    if (!response.ok) throw Error("exam code invalid");
     const jsonResponse = await response.json();
     console.log("Got questions!");
     loaderContainer.style.display = "none";
@@ -147,7 +149,9 @@ async function main() {
 
     resultsDiv.innerHTML = allResults;
   } catch (error) {
+
     console.error("Error occurred:", error);
+    
   }
 }
 document.getElementById("calculate").addEventListener("click", main);
