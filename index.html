@@ -3,29 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CUSAT CAT 2025 Score Calculator</title>
+    <title>CUSAT CAT Score Calculator</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="container">
-      <button id="themeToggle" title="Toggle theme">🌓</button>
-      <h1>CUSAT CAT 2025 Score Calculator</h1>
-      <label for="register_no">Register Number</label>
-      <input
-        type="text"
-        name="register_no"
-        id="register_no"
-        placeholder="Eg: 25101001"
-      />
-      <button id="calculate">Calculate Score</button>
+    <main class="container">
+      <header class="header">
+        <h1>CUSAT CAT Score Calculator</h1>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </header>
 
-      <div class="loaderContainer">
-        <div class="loader"></div>
+      <div class="form-group">
+        <label for="register_no">Register Number</label>
+        <input
+          type="text"
+          name="register_no"
+          id="register_no"
+          placeholder="e.g. 25101001"
+          autocomplete="off"
+        />
+      </div>
+      <button id="calculate" class="btn-primary">Calculate Score</button>
+
+      <div class="loader-container">
+        <div class="loader-bar">
+          <div class="loader-progress"></div>
+        </div>
         <p id="loaderText"></p>
       </div>
 
-      <div id="results"></div>
-    </div>
+      <div id="results" class="results-container"></div>
+    </main>
 
     <script src="index.js"></script>
     <script>

@@ -1,4 +1,4 @@
-# CUSAT CAT 2025 Score Calculator
+# CUSAT CAT Score Calculator
 
 ```
 // endpoints: 

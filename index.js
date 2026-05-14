@@ -3,14 +3,14 @@
 //      https://cusatapiobj.kerala.gov.in/api/questionslist
 
 const base_url = "https://cusatapiobj.kerala.gov.in/api";
-const loaderContainer = document.querySelector(".loaderContainer");
+const loaderContainer = document.querySelector(".loader-container");
 const loaderText = document.getElementById("loaderText");
 const resultsDiv = document.getElementById("results");
 
 async function login(register_no) {
   console.log("Logging in...");
   loaderContainer.style.display = "block";
-  loaderText.textContent = "Logging in...";
+  loaderText.textContent = "Authenticating...";
 
   const url = base_url + "/login";
   const data = { register_no: register_no };
@@ -28,9 +28,7 @@ async function login(register_no) {
     return jsonResponse;
   } catch (error) {
     console.error("Login failed:", error);
-    resultsDiv.innerHTML =
-      "naahh.. incorrect Register number! dont confuse with Roll Number .";
-    resultsDiv.classList.add("error");
+    resultsDiv.innerHTML = `<div class="error-msg">Invalid Register Number. Please check and try again (ensure it's not your Roll Number).</div>`;
     loaderContainer.style.display = "none";
     loaderText.textContent = "";
 
@@ -40,8 +38,7 @@ async function login(register_no) {
 
 async function get_questionlist(auth_token, exam_id) {
   console.log("Getting question list...");
-  loaderContainer.style.display = "block";
-  loaderText.textContent = "Getting question list...";
+  loaderText.textContent = "Fetching exam data...";
 
   const url = base_url + "/questionslist";
   const headers = {
@@ -72,16 +69,24 @@ async function get_questionlist(auth_token, exam_id) {
 
 async function main() {
   resultsDiv.innerHTML = "";
-  resultsDiv.className = "";
   try {
     const register_no = document.getElementById("register_no").value.trim();
+    if (!register_no) {
+      resultsDiv.innerHTML = `<div class="error-msg">Please enter a valid Register Number.</div>`;
+      return;
+    }
+    
     const loginResponse = await login(register_no);
     const auth_token = loginResponse["access_token"];
-    const exams = loginResponse["exams"]; // Get all exams
-    const candidate_name =
-      loginResponse["candidates"]["vchrCandidateName"] || "N/A";
+    const exams = loginResponse["exams"];
+    const candidate_name = loginResponse["candidates"]["vchrCandidateName"] || "Unknown Candidate";
 
-    let allResults = `<strong>Name</strong>: ${candidate_name}<br /><br />`;
+    let allResults = `
+      <div class="candidate-header">
+        <span class="label">Candidate</span>
+        <span class="value">${candidate_name}</span>
+      </div>
+    `;
 
     for (let i = 0; i < exams.length; i++) {
       const exam = exams[i];
@@ -129,29 +134,38 @@ async function main() {
           total_qs += 1;
         }
 
-        allResults += `<div class="result">`;
-        allResults += `<strong style="text-decoration: underline; font-size: 1.2em;">${exam_name}</strong><br />`;
-        allResults += `<strong>Final Score</strong>: ${score}<br />`;
-        allResults += `<strong>Attempted</strong>: ${attempted_qs}<br />`;
-        allResults += `<strong>Correct</strong>: ${correct_qs}<br />`;
-        allResults += `<strong>Incorrect</strong>: ${incorrect_qs}<br />`;
-        allResults += `<strong>Cancelled</strong>: ${cancelled_qs}<br />`;
-        allResults += `<strong>Total Questions</strong>: ${total_qs}<br />`;
-        allResults += `</div>`;
+        allResults += `
+          <div class="exam-result">
+            <h2 class="exam-title">${exam_name}</h2>
+            <div class="score-display">
+              <span class="score-value">${score}</span>
+              <span class="score-label">Final Score</span>
+            </div>
+            <div class="stats-grid">
+              <div class="stat"><span class="stat-lbl">Attempted</span><span class="stat-val">${attempted_qs}</span></div>
+              <div class="stat"><span class="stat-lbl">Correct</span><span class="stat-val">${correct_qs}</span></div>
+              <div class="stat"><span class="stat-lbl">Incorrect</span><span class="stat-val">${incorrect_qs}</span></div>
+              <div class="stat"><span class="stat-lbl">Cancelled</span><span class="stat-val">${cancelled_qs}</span></div>
+              <div class="stat"><span class="stat-lbl">Total Questions</span><span class="stat-val">${total_qs}</span></div>
+            </div>
+          </div>
+        `;
       } catch (examError) {
         console.error(`Error processing exam ${exam_id}:`, examError);
-        allResults += `<div class="result error">`;
-        allResults += `<strong>❌ ${exam_name}</strong><br />`;
-        allResults += `Error loading exam data<br />`;
-        allResults += `</div>`;
+        allResults += `
+          <div class="exam-error">
+            <div class="exam-error-title">${exam_name}</div>
+            <div class="exam-error-desc">Error loading exam data. Please try again later.</div>
+          </div>
+        `;
       }
     }
 
     resultsDiv.innerHTML = allResults;
   } catch (error) {
-
     console.error("Error occurred:", error);
-    
+    // Error UI is handled inside login/fetch catches
   }
 }
+
 document.getElementById("calculate").addEventListener("click", main);
