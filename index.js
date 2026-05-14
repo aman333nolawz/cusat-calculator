@@ -75,11 +75,12 @@ async function main() {
       resultsDiv.innerHTML = `<div class="error-msg">Please enter a valid Register Number.</div>`;
       return;
     }
-    
+
     const loginResponse = await login(register_no);
     const auth_token = loginResponse["access_token"];
     const exams = loginResponse["exams"];
-    const candidate_name = loginResponse["candidates"]["vchrCandidateName"] || "Unknown Candidate";
+    const candidate_name =
+      loginResponse["candidates"]["vchrCandidateName"] || "Unknown Candidate";
 
     let allResults = `
       <div class="candidate-header">
@@ -123,7 +124,7 @@ async function main() {
           }
 
           if (parseInt(correct_answer) === parseInt(selected_answer)) {
-            score += 3;
+            score += 4;
             correct_qs += 1;
           } else {
             score -= 1;
